@@ -53,7 +53,7 @@
 
                         <div class="row mb-0">
                             <div class="col-md-8 offset-md-4">
-                                <button type="submit" class="btn btn-primary">
+                                <button type="submit" class="btn btn-primary" href= {{route('main')}}>
                                     {{ __('Login') }}
                                 </button>
 
@@ -77,7 +77,7 @@
         const loginForm = document.getElementById('login-form');
         loginForm.addEventListener('submit', function () {
             setTimeout(function () {
-                window.location.href = "{{ route('main.index') }}";
+                window.location.href = "{{ route('main') }}";
             }, 2000); 
         });
     });

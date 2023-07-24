@@ -13,13 +13,12 @@ return new class extends Migration
     {
         Schema::create('tickets', function(Blueprint $table){
             $table->id();
-            $table->string('name_project');
-            $table->string('name_of_the_manager');
-            $table->char('email_of_the_manager')->nullable();
+            $table->string('name_project', 50);
+            $table->string('name_of_the_manager', 50);
+            $table->char('email_of_the_manager',50)->nullable();
             $table->date('start_date_of_execution')->nullable();
-            $table->char('status')->nullable();
+            $table->enum('status',['active', 'inactive']);
             $table->timestamps();
-            $table->softDeletes();
         });
     }
 

@@ -1,4 +1,4 @@
-@extends('layouts.main')
+@extends('main')
 @section('content')
         <div>
             <div>{{$tickets->name_project}}. {{$tickets->start_date_of_execution}}</div>

@@ -4,6 +4,7 @@ use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TicketController;
+use App\Http\Controllers\MainController;
 
 /*
 |--------------------------------------------------------------------------
@@ -16,10 +17,10 @@ use App\Http\Controllers\TicketController;
 |
 */
 
-Route::get('/', 'App\Http\Controllers\HomeController@index' );
-Route::get('logout', [LoginController::class,'logout'])->name('login');
-Route::get('/main', 'App\Http\Controllers\MainController@index')->name('main.index');
-Route::get('/home', [App\Http\Controllers\HomeController::class, 'index'])->name('home');
+
+Route::get('logout', [LoginController::class,'logout']);
+Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Auth::routes();
+Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::resource('ticket', TicketController::class);
 

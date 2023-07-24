@@ -49,14 +49,10 @@
                                 </li>
                             @endif
                         @else
-                            <li class="nav-item dropdown">
-                                <a  class="nav-link" href="{{ route('logout') }}"  role="button" data-bs-toggle="dropdown" aria-haspopup="true" aria-expanded="false"  method="POST" v-pre>
+                            <li class="nav-item">
+                                <a  class="nav-link" href="{{ route('logout') }}">
                                     Back
                                 </a> 
-                                    <form id="logout-form" action="{{ route('logout') }}" method="POST" class="d-none">
-                                        @csrf
-                                    </form>
-                                </div>
                             </li>
                         @endguest
                     </ul>

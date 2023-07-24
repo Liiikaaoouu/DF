@@ -30,9 +30,15 @@ class TicketController extends Controller
     /**
      * Store a newly created resource in storage.
      */
-    public function store(StoreRequest $request)
+    public function store(Request $request)
     {
-        $data = $request->validated();
+        $data = $request->validated([
+            'name_project' => 'required|string',
+            'name_of_the_manager' => 'required|string',
+            'email_of_the_manager' => 'nullable|email',
+            'start_date_of_execution' => 'nullable|date',
+            'status' => 'nullable|string',
+        ]);
         Ticket::create($data);
         return redirect()->route('ticket.index');
     }
@@ -59,30 +65,24 @@ class TicketController extends Controller
     /**
      * Update the specified resource in storage.
      */
-    public function update(UpdateRequest $request, Ticket $tickets)
+    public function update(Request $request, $id)
     {
-        $this->authorize('update', $tickets);
         $data = $request->validate([
-            'name_project' => 'required|string',
-            'name_of_the_manager' => 'required|string',
-            'email_of_the_manager' => 'nullable|email',
-            'start_date_of_execution' => 'nullable|date',
-            'status' => 'nullable|string',
-        ]);
-        $tickets->update($data);
-        dd($tickets->toSql(), $tickets->getBindings());
+        'name_project' => 'required|string',
+        'name_of_the_manager' => 'required|string',
+        'email_of_the_manager' => 'nullable|email',
+        'status' => 'nullable|string',
+    ]);
+        Ticket::findOrFail($id)->update($data);
         return redirect()->route('ticket.index');
     }
 
     /**
      * Remove the specified resource from storage.
      */
-    public function destroy(Ticket $tickets)
+    public function destroy($id)
     {
-        $this->authorize('delete', $tickets);
-        $tickets->delete();
+        Ticket::find($id)->delete();
         return redirect()->route('ticket.index');
-        // $tickets->delete();
-        // return redirect()->route('ticket.index');
     }
 }
