@@ -37,7 +37,7 @@ class TicketController extends Controller
             'name_of_the_manager' => 'required|string',
             'email_of_the_manager' => 'nullable|email',
             'start_date_of_execution' => 'nullable|date',
-            'status' => 'nullable|string',
+            'status' => 'nullable|enum',
         ]);
         Ticket::create($data);
         return redirect()->route('ticket.index');
