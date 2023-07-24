@@ -17,9 +17,12 @@
                 <input type="text" name="email_of_the_manager" class="form-control" id="email_of_the_manager" placeholder="email_of_the_manager" value="{{ $tickets->email_of_the_manager }}">
             </div>
             <div class="form-group">
-                <label for="status">Status</label>
-                <input type="text" name="status" class="form-control" id="status" placeholder="status" value="{{ $tickets->status }}">
-            </div>
+                <label for="Status">Status</label>
+                <select class="form-control" id="status" name = 'status'>
+                    <option value = "active"> Active</option>
+                    <option value = "inactive"> Inactive</option>
+                </select>
+              </div>
 
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
