@@ -4,12 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Factories\HasFactory;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
 class Ticket extends Model
 {
     use HasFactory;
-    use SoftDeletes;
     protected $guarded = false;
 
     protected $fillable = [
@@ -19,5 +17,8 @@ class Ticket extends Model
         'start_date_of_execution',
         'status',
     ];
+    public function user(){
+        return $this->belongsToMany(User::class, 'ticket_users', 'ticket_id', 'user_id');
+    }
 
 }

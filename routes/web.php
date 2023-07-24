@@ -23,4 +23,3 @@ Route::get('/', [App\Http\Controllers\HomeController::class, 'index']);
 Auth::routes();
 Route::get('/main', [MainController::class, 'index'])->name('main');
 Route::resource('ticket', TicketController::class);
-

@@ -14,9 +14,12 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        Ticket::factory(20)->create();
-        User::factory()->admin()->create();
-        User::factory(10)->create(); 
+        $tickets = Ticket::factory(10)->create();
+        $user = User::factory(5)->create(); 
+        foreach($tickets as $ticket){
+            $userId = $user->random(1);
+            $ticket->user()->attach($userId);
+        }
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

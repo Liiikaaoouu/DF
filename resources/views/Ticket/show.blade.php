@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
         <div>
-            <div>{{$tickets->name_project}}. {{$tickets->start_date_of_execution}}</div>
+            <div> {{$tickets->id}}. {{$tickets->name_project}}. {{$tickets->start_date_of_execution}}</div>
         </div>
         <div>
             <a href ="{{route('ticket.index')}}">Back</a>
