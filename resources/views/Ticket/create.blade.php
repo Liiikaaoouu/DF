@@ -55,15 +55,22 @@
                   
                 <div class="form-group">
                   <label for="status">Status</label>
-                  <input 
-                    
-                    value="{{old('status')}}"
-
-                    type="text" name = "status" class="form-control" id="status" placeholder="active/inactive">
-                  
-                  @error('status')
-                    <p class = "text-danger">{{ $message }}</p>
-                  @enderror
+                  <select class="form-control" id="status" name="status[]">
+                    @foreach($status as $statu)
+                    <option value="{{ $statu }}" @if($statu === $tickets->status) selected @endif>{{ $statu }}</option>
+                    @endforeach
+                  </select>
+                </div>
+                @error('status')
+                  <p class = "text-danger">{{ $message }}</p>
+                @enderror
+                <div class="form-group">
+                  <label for="user">User</label>
+                    <select class="form-control" id="user" name="user[]">
+                      @foreach($users as $user)
+                      <option value = "{{$user->id}}"{{ in_array($user->id, $userRoles) ? 'selected' : ''}}>{{ $user->name }}</option>
+                      @endforeach
+                    </select>
                 </div>
                 <button type="submit" class="btn btn-primary">Create</button>
               </form>

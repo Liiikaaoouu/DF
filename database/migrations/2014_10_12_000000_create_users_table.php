@@ -17,7 +17,8 @@ return new class extends Migration
             $table->string('email')->unique();
             $table->timestamp('email_verified_at')->nullable(); 
             $table->string('password');
-            $table->string('role')->default('user'); // По умолчанию устанавливаем роль "user"
+            $table->string('role')->default('admin'); 
+            $table->unsignedBigInteger('ticket_id')->nullable();
             $table->rememberToken();
             $table->timestamps();
         });

@@ -6,6 +6,9 @@ use App\Http\Requests\Ticket\StoreRequest;
 use App\Http\Requests\Ticket\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
+use App\Models\TicketStatus;
+use App\Models\User;
+use Illuminate\Support\Facades\DB;
 
 class TicketController extends Controller
 {
@@ -14,7 +17,7 @@ class TicketController extends Controller
      */
     public function index()
     {
-        $tickets = Ticket::all();
+        $tickets = Ticket::with('user')->get();
         return view('ticket.index', compact('tickets'));
     }
 
@@ -24,7 +27,11 @@ class TicketController extends Controller
     public function create()
     {
         $tickets = Ticket::all();
-        return view('ticket.create', compact('tickets'));
+        $users = User::all();
+        $userRoles = $tickets->user->pluck('id')->toArray();
+        $status = DB::table('tickets')->distinct()->pluck('status');
+
+        return view('ticket.create', compact('tickets', 'users', 'status', 'userRoles'));
     }
 
     /**
@@ -32,14 +39,20 @@ class TicketController extends Controller
      */
     public function store(Request $request)
     {
-        $data = $request->validated([
+        $data = $request->validate([
             'name_project' => 'required|string',
             'name_of_the_manager' => 'required|string',
             'email_of_the_manager' => 'nullable|email',
             'start_date_of_execution' => 'nullable|date',
             'status' => 'nullable|string',
+            'users' => 'nullable|array', 
         ]);
-        Ticket::create($data);
+
+        $ticket = Ticket::create($data);
+        if ($request->has('users')) {
+            $ticket->users()->attach($request->input('users'));
+        }
+
         return redirect()->route('ticket.index');
     }
 
@@ -56,7 +69,10 @@ class TicketController extends Controller
     public function edit($id)
     {
         $tickets = Ticket::findOrFail($id);
-        return view('ticket.edit', compact('tickets'));
+        $users = User::all();
+        $userRoles = $tickets->user->pluck('id')->toArray();
+        $status = DB::table('tickets')->distinct()->pluck('status');
+        return view('ticket.edit', compact('tickets', 'users', 'status', 'userRoles'));
     }
 
     /**
@@ -65,12 +81,21 @@ class TicketController extends Controller
     public function update(Request $request, $id)
     {
         $data = $request->validate([
-        'name_project' => 'required|string',
-        'name_of_the_manager' => 'required|string',
-        'email_of_the_manager' => 'nullable|email',
-        'status' => 'nullable|string',
-    ]);
-        Ticket::findOrFail($id)->update($data);
+            'name_project' => 'required|string',
+            'name_of_the_manager' => 'required|string',
+            'email_of_the_manager' => 'nullable|email',
+            'status' => 'nullable|string',
+            'users' => 'nullable|array',
+        ]);
+        dd($request->all());
+        $ticket = Ticket::findOrFail($id);
+        $ticket->update($data);
+        if ($request->has('users')) {
+            $ticket->users()->sync($request->input('users'));
+        } else {
+            $ticket->users()->detach();
+        }
+
         return redirect()->route('ticket.index');
     }
 
@@ -79,7 +104,9 @@ class TicketController extends Controller
      */
     public function destroy($id)
     {
-        Ticket::find($id)->delete();
+        $tickets = Ticket::find($id);
+        $tickets->delete();
+        $tickets->user()->detach();
         return redirect()->route('ticket.index');
     }
 }

@@ -3,7 +3,7 @@
     <div>
         <form action="{{ route('ticket.update', $tickets->id) }}" method="post">
             @csrf
-            @method('patch')
+            @method('put')
             <div class="form-group">
                 <label for="name_project">Name project</label>
                 <input type="text" name="name_project" class="form-control" id="name_project" placeholder="name_project" value="{{ $tickets->name_project }}">
@@ -17,13 +17,21 @@
                 <input type="text" name="email_of_the_manager" class="form-control" id="email_of_the_manager" placeholder="email_of_the_manager" value="{{ $tickets->email_of_the_manager }}">
             </div>
             <div class="form-group">
-                <label for="Status">Status</label>
-                <select class="form-control" id="status" name = 'status'>
-                    <option value = "active"> Active</option>
-                    <option value = "inactive"> Inactive</option>
+                <label for="status">Status</label>
+                <select class="form-control" id="status" name="status[]">
+                    @foreach($status as $statu)
+                    <option value="{{ $statu }}" @if($statu === $tickets->status) selected @endif>{{ $statu }}</option>
+                    @endforeach
                 </select>
-              </div>
-
+            </div>
+            <div class="form-group">
+                <label for="user">User</label>
+                <select class="form-control" id="user" name="user[]">
+                    @foreach($users as $user)
+                        <option value = "{{$user->id}}"{{ in_array($user->id, $userRoles) ? 'selected' : ''}}>{{ $user->name }}</option>
+                    @endforeach
+                </select>
+            </div>
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

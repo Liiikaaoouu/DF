@@ -5,6 +5,7 @@ namespace Database\Factories;
 use App\Models\User;
 use Illuminate\Database\Eloquent\Factories\Factory;
 use Illuminate\Support\Str;
+use App\Models\Ticket;
 
 class UserFactory extends Factory
 {
@@ -28,7 +29,10 @@ class UserFactory extends Factory
             'email_verified_at' => now(),
             'password' =>  bcrypt('password'), 
             'remember_token' => Str::random(10),
-            'role' => 'user', 
+            'role' => 'admin', 
+            'ticket_id' => function () {
+                return Ticket::all()->random()->id;
+            }
         ];
     }
 
