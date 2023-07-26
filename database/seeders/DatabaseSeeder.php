@@ -15,18 +15,32 @@ class DatabaseSeeder extends Seeder
      */
     public function run(): void
     {
-        // Ticket::factory(10)->create();
         $tickets = Ticket::all();
-        $users = User::factory(5)->create(); 
-        foreach ($users as $user) {
-            $userTickets = $tickets->random(1);
-            $user->tickets()->attach($userTickets);
+        if ($tickets->isEmpty()){
+            $users = User::factory(5)->create(); 
+            foreach ($users as $user) {
+                $userTickets = $tickets->random(1);
+                $user->tickets()->attach($userTickets);
+            }
+            foreach ($tickets as $ticket) {
+                $userId = $users->random()->id;
+                $ticket->user_id = $userId;
+                $ticket->save();
+            }
+        }else{
+            Ticket::factory(10)->create();
+            $users = User::factory(5)->create(); 
+            foreach ($users as $user) {
+                $userTickets = $tickets->random(1);
+                $user->tickets()->attach($userTickets);
+            }
+            foreach ($tickets as $ticket) {
+                $userId = $users->random()->id;
+                $ticket->user_id = $userId;
+                $ticket->save();
+            }
         }
-        foreach ($tickets as $ticket) {
-            $userId = $users->random()->id;
-            $ticket->user_id = $userId;
-            $ticket->save();
-        }
+        
         // \App\Models\User::factory(10)->create();
 
         // \App\Models\User::factory()->create([

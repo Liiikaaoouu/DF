@@ -55,9 +55,9 @@
                   
                 <div class="form-group">
                   <label for="status">Status</label>
-                  <select class="form-control" id="status" name="status[]">
+                  <select class="form-control" id="status" name="status">
                     @foreach($status as $statu)
-                    <option value="{{ $statu }}" @if($statu === $tickets->status) selected @endif>{{ $statu }}</option>
+                      <option value="{{ $statu }}">{{ $statu }}</option>
                     @endforeach
                   </select>
                 </div>
@@ -68,7 +68,7 @@
                   <label for="user">User</label>
                     <select class="form-control" id="user" name="user[]">
                       @foreach($users as $user)
-                      <option value = "{{$user->id}}"{{ in_array($user->id, $userRoles) ? 'selected' : ''}}>{{ $user->name }}</option>
+                      <option value = "{{$user->id}}">{{ $user->name }}</option>
                       @endforeach
                     </select>
                 </div>

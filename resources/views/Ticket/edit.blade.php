@@ -18,7 +18,7 @@
             </div>
             <div class="form-group">
                 <label for="status">Status</label>
-                <select class="form-control" id="status" name="status[]">
+                <select class="form-control" id="status" name="status">
                     @foreach($status as $statu)
                     <option value="{{ $statu }}" @if($statu === $tickets->status) selected @endif>{{ $statu }}</option>
                     @endforeach
@@ -32,6 +32,16 @@
                     @endforeach
                 </select>
             </div>
+
+                @if ($errors->any())
+                    <div class="alert alert-danger">
+                        <ul>
+                            @foreach ($errors->all() as $error)
+                                <li>{{ $error }}</li>
+                            @endforeach
+                        </ul>
+                    </div>
+                @endif
             <button type="submit" class="btn btn-primary">Update</button>
         </form>
     </div>

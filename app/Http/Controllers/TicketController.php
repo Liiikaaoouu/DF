@@ -28,9 +28,11 @@ class TicketController extends Controller
     {
         $tickets = Ticket::all();
         $users = User::all();
-        $userRoles = $tickets->user->pluck('id')->toArray();
+        $userRoles = [];
+        foreach ($tickets as $ticket) {
+            $userRoles[$ticket->id] = $ticket->user->pluck('id')->toArray();
+        }
         $status = DB::table('tickets')->distinct()->pluck('status');
-
         return view('ticket.create', compact('tickets', 'users', 'status', 'userRoles'));
     }
 
@@ -85,15 +87,14 @@ class TicketController extends Controller
             'name_of_the_manager' => 'required|string',
             'email_of_the_manager' => 'nullable|email',
             'status' => 'nullable|string',
-            'users' => 'nullable|array',
+            'user' => 'nullable|array',
         ]);
-        dd($request->all());
         $ticket = Ticket::findOrFail($id);
         $ticket->update($data);
-        if ($request->has('users')) {
-            $ticket->users()->sync($request->input('users'));
+        if ($request->has('user')) {
+            $ticket->user()->sync($request->input('user'));
         } else {
-            $ticket->users()->detach();
+            $ticket->user()->detach();
         }
 
         return redirect()->route('ticket.index');

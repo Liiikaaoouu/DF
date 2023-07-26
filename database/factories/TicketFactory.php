@@ -23,9 +23,9 @@ class TicketFactory extends Factory
             'email_of_the_manager' => $this->faker->email,
             'start_date_of_execution' => $this->faker->date,
             'status' => $this->faker->randomElement(['unkow', 'active', 'inactive']),
-            // 'user_id' => function () {
-            //     return User::all()->random()->id;
-            // },
+            'user_id' => function () {
+                return User::all()->random()->id;
+            },
         ];
     }
 }
