@@ -28,7 +28,7 @@
                 <label for="user">User</label>
                 <select class="form-control" id="user" name="user[]">
                     @foreach($users as $user)
-                        <option value = "{{$user->id}}"{{ in_array($user->id, $userRoles) ? 'selected' : ''}}>{{ $user->name }}</option>
+                        <option value = "{{$user->id}}"{{ in_array($user->id, $userTicket) ? 'selected' : ''}}>{{ $user->name }}</option>
                     @endforeach
                 </select>
             </div>

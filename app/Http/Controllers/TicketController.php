@@ -18,7 +18,11 @@ class TicketController extends Controller
     public function index()
     {
         $tickets = Ticket::with('user')->get();
-        return view('ticket.index', compact('tickets'));
+        if (!$tickets->isEmpty()){
+            return view('ticket.index', compact('tickets'));
+        }else{
+            dd("таблица Ticket пустая");
+        }
     }
 
     /**
@@ -28,12 +32,12 @@ class TicketController extends Controller
     {
         $tickets = Ticket::all();
         $users = User::all();
-        $userRoles = [];
-        foreach ($tickets as $ticket) {
-            $userRoles[$ticket->id] = $ticket->user->pluck('id')->toArray();
+        $userTicket = [];
+        if (!$tickets->isEmpty()){
+            $userTicket = $tickets->user->pluck('id')->toArray();
         }
         $status = DB::table('tickets')->distinct()->pluck('status');
-        return view('ticket.create', compact('tickets', 'users', 'status', 'userRoles'));
+        return view('ticket.create', compact('tickets', 'users', 'status', 'userTicket'));
     }
 
     /**
@@ -63,8 +67,8 @@ class TicketController extends Controller
     {
         $tickets = Ticket::findOrFail($id);
         return view('ticket.show', compact('tickets'));
+        
     }
-
     /**
      * Show the form for editing the specified resource.
      */
@@ -72,9 +76,9 @@ class TicketController extends Controller
     {
         $tickets = Ticket::findOrFail($id);
         $users = User::all();
-        $userRoles = $tickets->user->pluck('id')->toArray();
+        $userTicket = $tickets->user->pluck('id')->toArray();
         $status = DB::table('tickets')->distinct()->pluck('status');
-        return view('ticket.edit', compact('tickets', 'users', 'status', 'userRoles'));
+        return view('ticket.edit', compact('tickets', 'users', 'status', 'userTicket'));
     }
 
     /**
@@ -106,8 +110,10 @@ class TicketController extends Controller
     public function destroy($id)
     {
         $tickets = Ticket::find($id);
-        $tickets->delete();
-        $tickets->user()->detach();
+        if(!$tickets->isEmpty()){
+            $tickets->delete();
+            $tickets->user()->detach();
+        }
         return redirect()->route('ticket.index');
     }
 }
