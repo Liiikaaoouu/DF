@@ -2,13 +2,13 @@
 
 namespace App\Http\Controllers;
 
-use App\Http\Requests\Ticket\StoreRequest;
-use App\Http\Requests\Ticket\UpdateRequest;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
-use App\Models\TicketStatus;
 use App\Models\User;
+use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Spatie\Permission\Models\Role;
+use Spatie\Permission\Models\Permission;
 
 class TicketController extends Controller
 {
@@ -30,14 +30,20 @@ class TicketController extends Controller
      */
     public function create()
     {
-        $tickets = Ticket::all();
-        $users = User::all();
-        $userTicket = [];
-        if (!$tickets->isEmpty()){
-            $userTicket = $tickets->user->pluck('id')->toArray();
+        $user = Auth::User();
+        
+        if ($user->hasPermissionTo('create ticket')){
+            $tickets = Ticket::all();
+            $users = User::all();
+            $userTicket = [];
+            if (!$tickets->isEmpty()){
+                $userTicket = $tickets->user->pluck('id')->toArray();
+            }
+            $status = DB::table('tickets')->distinct()->pluck('status');
+            return view('ticket.create', compact('tickets', 'users', 'status', 'userTicket'));
+        }else {
+            abort(403); 
         }
-        $status = DB::table('tickets')->distinct()->pluck('status');
-        return view('ticket.create', compact('tickets', 'users', 'status', 'userTicket'));
     }
 
     /**

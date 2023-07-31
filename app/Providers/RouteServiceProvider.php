@@ -18,6 +18,7 @@ class RouteServiceProvider extends ServiceProvider
      * @var string
      */
     public const MAIN = '/';
+    public const LOG = '/logout';
 
     /**
      * Define your route model bindings, pattern filters, and other route configuration.
