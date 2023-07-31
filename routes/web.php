@@ -5,6 +5,7 @@ use Illuminate\Support\Facades\Route;
 use App\Http\Controllers\Auth\LoginController;
 use App\Http\Controllers\TicketController;
 use App\Http\Controllers\MainController;
+use App\Http\Controllers\RoleController;
 
 /*
 |--------------------------------------------------------------------------
@@ -35,6 +36,6 @@ Route::middleware(['auth'])->group(function () {
     // Route::get('ticket/{ticket}/edit', TicketController::class, 'edit')->middleware('can:update ticket')->name('ticket.edit');
     // Route::patch('ticket/{ticket}', TicketController::class, 'update')->middleware('can:update ticket')->name('ticket.update');
     // Route::delete('ticket/{ticket}', TicketController::class, 'destroy')->middleware('can:destroy ticket')->name('ticket.destroy');
-    Route::resource('ticket', RoleController::class);
+    Route::resource('ticket', TicketController::class);
     Route::resource('role', RoleController::class)->middleware('role:super-admin');
 });

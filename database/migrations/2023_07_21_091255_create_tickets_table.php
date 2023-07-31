@@ -18,6 +18,7 @@ return new class extends Migration
             $table->char('email_of_the_manager',50)->nullable();
             $table->date('start_date_of_execution')->nullable();
             $table->enum('status',['unknow', 'active', 'inactive']);
+            $table->unsignedBigInteger('user_id')->nullable();
             $table->timestamps();
         });
     }

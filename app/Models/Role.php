@@ -10,4 +10,5 @@ use Spatie\Permission\Models\Role as SpatieRole;
 class Role extends SpatieRole implements RoleContract
 {
     use HasFactory;
+    protected $guarded = false;
 }
