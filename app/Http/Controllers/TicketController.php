@@ -30,20 +30,12 @@ class TicketController extends Controller
      */
     public function create()
     {
-        $user = Auth::User();
+        $tickets = Ticket::all();
+        $users = User::all();
+        $userTicket = [];
+        $status = DB::table('tickets')->distinct()->pluck('status');
+        return view('ticket.create', compact('tickets', 'users', 'status', 'userTicket'));
         
-        if ($user->hasPermissionTo('create ticket')){
-            $tickets = Ticket::all();
-            $users = User::all();
-            $userTicket = [];
-            if (!$tickets->isEmpty()){
-                $userTicket = $tickets->user->pluck('id')->toArray();
-            }
-            $status = DB::table('tickets')->distinct()->pluck('status');
-            return view('ticket.create', compact('tickets', 'users', 'status', 'userTicket'));
-        }else {
-            abort(403); 
-        }
     }
 
     /**

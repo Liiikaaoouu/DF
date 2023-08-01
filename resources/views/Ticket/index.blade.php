@@ -14,16 +14,16 @@
                             <h5 class="card-header">{{$ticket->name_project}}</h5>
                             <div class="card-body">
                                 @if(auth()->user()->can('show ticket'))
-                                    <a href="{{route(ticket.show)}}">View ticket</a>
+                                    <a href="{{route('ticket.show', $ticket->id)}}" class="btn btn-primary">View ticket</a>
                                 @endif
                                 @if(auth()->user()->can('update ticket'))    
-                                    <a href="{{route(ticket.edit)}}">Edit</a>
+                                    <a href="{{route('ticket.edit', $ticket->id)}}" class="btn btn-primary">Edit</a>
                                 @endif
                                 @if(auth()->user()->can('destroy ticket'))
-                                    <form action = "{{route('ticket.destroy', $tickets->id)}}" method = "post">
+                                    <form action = "{{route('ticket.destroy', $ticket->id)}}" method = "post">
                                         @csrf
                                         @method('DELETE')
-                                        <input type="submit" value="Delet" class="btn btn-danger">
+                                        <input type="submit" value="Delet" class="btn btn-danger mt-2">
                                     </form>
                                 @endif
                             </div>

@@ -33,12 +33,6 @@ class SuperAdmin extends Seeder
             'password' => bcrypt('x5410041'),
         ]);
 
-        $superId = $superUser->id;
-
-        $superad->update([
-            'team_id' => $superId
-        ]);
-
         $superUser->assignRole('super-admin');
 
     }

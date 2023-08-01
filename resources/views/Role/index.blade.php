@@ -1,28 +1,28 @@
 @extends('main')
 @section('content')
-    <div>
+    <div class="mt-4">
         @csrf
         @method('patch')
-        <div class="conteiner mt-6">
+        <div class="conteiner mt-4">
             <div class="row">
-                <div class="col-md-12">
+                <div class="col-md-6">
                     <a href="{{ route('role.create') }}" class="btn btn-success md-4">Add new role</a>
                     @foreach($roles as $role)
-                        <div class="card md-4">
+                        <div class="card mt-4 d-4">
                             <h5 class="card-header">{{$role->name}}</h5>
                             <div class="card-body">
-                                <a href="{{route(role.show)}}">View role</a>
-                                <a href="{{route(role.edit)}}">Edit</a>
+                                <a href="{{route('role.show', $role->id)}}" class="btn btn-primary">View role</a>
+                                <a href="{{route('role.edit', $role->id)}}" class="btn btn-primary">Edit</a>
                                 <form action = "{{route('role.destroy', $role->id)}}" method = "post">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="submit" value="Delet" class="btn btn-danger">
+                                    <input type="submit" value="Delet" class="btn btn-danger mt-2">
                                 </form>
                             </div>
                         </div>
                     @endforeach
                 </div>
-            </div>1
+            </div>
         </div>
     </div>
 @endsection

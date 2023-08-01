@@ -19,6 +19,7 @@
                     <div class="form-group form-check">
                         <input type="checkbox" value={{$permission->id}} name="permissions[S]" class="form-check-input" id='{{$permission->id}}'>
                         <label class="form-check-label" for="{{$permission->id}}">{{$permission->name}}</label>
+                    </div>
                   @endforeach
                   <button type="submit" class="btn btn-primary">Create</button>
                 </div>
