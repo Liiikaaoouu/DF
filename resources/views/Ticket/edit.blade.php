@@ -31,6 +31,13 @@
                         <option value = "{{$user->id}}"{{ in_array($user->id, $userTicket) ? 'selected' : ''}}>{{ $user->name }}</option>
                     @endforeach
                 </select>
+            </div><div class="form-group">
+                <label for="cstegory">Category</label>
+                <select class="form-control" id="category" name="category">
+                    @foreach($category as $categories)
+                        <option value = "{{$categories->id}}" {{ $categories->id == $tickets->category_id ? 'selected' : ''}}>{{ $categories->title }}</option>
+                    @endforeach
+                </select>
             </div>
 
                 @if ($errors->any())

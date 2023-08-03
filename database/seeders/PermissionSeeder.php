@@ -18,5 +18,7 @@ class PermissionSeeder extends Seeder
         Permission::create(['name'=>'update ticket']);
         Permission::create(['name'=>'create ticket']);
         Permission::create(['name'=>'destroy ticket']);
+        Permission::create(['name'=>'create commit']);
+        Permission::create(['name'=>'destroy commit']);
     }
 }

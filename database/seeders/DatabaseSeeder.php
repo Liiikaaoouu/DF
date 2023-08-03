@@ -3,6 +3,8 @@
 namespace Database\Seeders;
 
 // use Illuminate\Database\Console\Seeds\WithoutModelEvents;
+
+use App\Models\Category;
 use Illuminate\Database\Seeder;
 use App\Models\Ticket;
 use App\Models\User;
@@ -69,7 +71,7 @@ class DatabaseSeeder extends Seeder
         $admin->assignRole('admin');
 
         $users =  User::all();
-
+        Category::factory(4)->create();
         $tickets = Ticket::factory(10)->create();
 
         foreach ($tickets as $ticket) {

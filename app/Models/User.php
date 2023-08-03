@@ -42,4 +42,8 @@ class User extends Authenticatable
     public function tickets(){
         return $this->belongsToMany(Ticket::class, 'ticket_users');
     }
+
+    public function commit(){
+        return $this->hasMany(Commit::class);
+    }
 }

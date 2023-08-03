@@ -2,6 +2,8 @@
 
 namespace App\Http\Controllers;
 
+use App\Models\Category;
+use App\Models\Commit;
 use Illuminate\Http\Request;
 use App\Models\Ticket;
 use App\Models\User;
@@ -30,11 +32,11 @@ class TicketController extends Controller
      */
     public function create()
     {
+        $categories = Category::all();
         $tickets = Ticket::all();
         $users = User::all();
-        $userTicket = [];
         $status = DB::table('tickets')->distinct()->pluck('status');
-        return view('ticket.create', compact('tickets', 'users', 'status', 'userTicket'));
+        return view('ticket.create', compact('tickets', 'users', 'status', 'categories'));
         
     }
 
@@ -49,13 +51,20 @@ class TicketController extends Controller
             'email_of_the_manager' => 'nullable|email',
             'start_date_of_execution' => 'nullable|date',
             'status' => 'nullable|string',
-            'users' => 'nullable|array', 
+            'user' => 'nullable|array', 
+            'category_id' => '',
         ]);
-
+    
+        // $user = User::findOrFail($request->user);
+        // $category= Category::FindOrFail($request->category_id);
+        // unset($data['user']);
+        // $ticket = Ticket::create($data);
+        // $ticket->user()->attach($user);
+        // $ticket->category()->create($cat);
+        $user = $data['user'];
+        unset($data['user']);
         $ticket = Ticket::create($data);
-        if ($request->has('users')) {
-            $ticket->users()->attach($request->input('users'));
-        }
+        $ticket->user()->sync($user);
 
         return redirect()->route('ticket.index');
     }
@@ -63,8 +72,11 @@ class TicketController extends Controller
     public function show($id)
 
     {
-        $tickets = Ticket::findOrFail($id);
-        return view('ticket.show', compact('tickets'));
+        $tickets = Ticket::with('user', 'category')->findOrFail($id);
+        $commits = Commit::where('ticket_id', $tickets->id)->with('user')->get();
+        $ticket = Ticket::findOrFail($id);
+        session(['current_ticket' => $ticket]);
+        return view('ticket.show', compact('tickets', 'commits'));
         
     }
     /**
@@ -75,8 +87,9 @@ class TicketController extends Controller
         $tickets = Ticket::findOrFail($id);
         $users = User::all();
         $userTicket = $tickets->user->pluck('id')->toArray();
+        $category = Category::all();
         $status = DB::table('tickets')->distinct()->pluck('status');
-        return view('ticket.edit', compact('tickets', 'users', 'status', 'userTicket'));
+        return view('ticket.edit', compact('tickets', 'users', 'status', 'userTicket', 'category'));
     }
 
     /**
@@ -90,14 +103,13 @@ class TicketController extends Controller
             'email_of_the_manager' => 'nullable|email',
             'status' => 'nullable|string',
             'user' => 'nullable|array',
+            'category_id' => '',
         ]);
         $ticket = Ticket::findOrFail($id);
+        $user = $data['user'];
+        $ticket->user()->sync($user);
+        unset($data['user']);
         $ticket->update($data);
-        if ($request->has('user')) {
-            $ticket->user()->sync($request->input('user'));
-        } else {
-            $ticket->user()->detach();
-        }
 
         return redirect()->route('ticket.index');
     }
@@ -108,10 +120,8 @@ class TicketController extends Controller
     public function destroy($id)
     {
         $tickets = Ticket::find($id);
-        if(!$tickets->isEmpty()){
-            $tickets->delete();
-            $tickets->user()->detach();
-        }
+        $tickets->delete();
+        $tickets->user()->detach();
         return redirect()->route('ticket.index');
     }
 }

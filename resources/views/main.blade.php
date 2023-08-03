@@ -17,6 +17,7 @@
           @role('super-admin')
             <a class="navbar-brand" aria-current="page" href="{{route('role.index')}}">View role</a>
           @endrole
+          <a class="navbar-brand" aria-current="page" href="{{ route('category.index') }}">View category</a>
             <div class="collapse navbar-collapse" id="navbarTogglerDemo03">
             <ul class="navbar-nav me-auto mb-2 mb-lg-0">
               <li class="nav-item">
@@ -29,7 +30,7 @@
           </div>
         </div>
       </nav>
-    <div>
+    <div class="container">
         @yield('content')
     </div>
 </body>

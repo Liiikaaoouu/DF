@@ -10,15 +10,14 @@ class Ticket extends Model
     use HasFactory;
     protected $guarded = false;
 
-    protected $fillable = [
-        'name_project',
-        'name_of_the_manager',
-        'email_of_the_manager',
-        'start_date_of_execution',
-        'status',
-    ];
     public function user(){
         return $this->belongsToMany(User::class, 'ticket_users');
     }
 
+    public function category(){
+        return $this->belongsTo(Category::class, 'category_id', 'id');
+    }
+    public function commit(){
+        return $this->belongsTo(Commit::class);
+    }
 }

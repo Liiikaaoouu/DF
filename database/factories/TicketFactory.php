@@ -2,6 +2,7 @@
 
 namespace Database\Factories;
 
+use App\Models\Category;
 use Illuminate\Database\Eloquent\Factories\Factory;
 
 /**
@@ -22,6 +23,7 @@ class TicketFactory extends Factory
             'email_of_the_manager' => $this->faker->email,
             'start_date_of_execution' => $this->faker->date,
             'status' => $this->faker->randomElement(['unknow', 'active', 'inactive']),
+            'category_id' => Category::get()->random()->id,
         ];
     }
 }

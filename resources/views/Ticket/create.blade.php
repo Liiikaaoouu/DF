@@ -72,6 +72,14 @@
                       @endforeach
                     </select>
                 </div>
+                <div class="form-group">
+                  <label for="category_id">Category</label>
+                  <select class="form-control" id="category_id" name="category_id">
+                      @foreach($categories as $category)
+                          <option value="{{ $category->id }}">{{ $category->title }}</option>
+                      @endforeach
+                  </select>
+                </div>
                 <button type="submit" class="btn btn-primary">Create</button>
               </form>
         </div>

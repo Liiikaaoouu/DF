@@ -21,11 +21,11 @@ class RoleCreat extends Seeder
         }
         if (!Role::where('name', 'user')->exists()) {
             $us = Role::create(['name' => 'user']);
-            $us->givePermissionTo('show ticket');
+            $us->givePermissionTo('show ticket', 'create commit');
         }
         if (!Role::where('name', 'manager')->exists()) {
             $man = Role::create(['name' => 'manager']);
-            $man->givePermissionTo('create ticket', 'update ticket', 'show ticket');
+            $man->givePermissionTo('create ticket', 'update ticket', 'show ticket', 'create commit');
         }
         if (!Role::where('name', 'admin')->exists()) {
             $ad = Role::create(['name' => 'admin']);

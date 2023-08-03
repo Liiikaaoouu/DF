@@ -63,8 +63,10 @@ class RegisterController extends Controller
             'password' => bcrypt($data['password']),
         ]);
 
-        $role = ['admin', 'manager', 'user'];
-        $user->assignRole(array_rand($role));
+        $userRole = Role::where('name', 'user')->first();
+        if ($userRole) {
+            $user->roles()->attach($userRole);
+        }
     
         event(new Registered($user));
     
