@@ -39,6 +39,14 @@
                     @endforeach
                 </select>
             </div>
+            <div class="form-group">
+                <label for="attachment">Attachment</label>
+                <input type="file" class="form-control-file" id="attachment" name="attachment">
+                @if ($tickets->attachment)
+                    <p>Current Attachment: {{ $tickets->attachment }}</p>
+                    <a href="{{ asset('storage/attachments/' . $tickets->attachment) }}" target="_blank">Download Attachment</a>
+                @endif
+            </div>
 
                 @if ($errors->any())
                     <div class="alert alert-danger">

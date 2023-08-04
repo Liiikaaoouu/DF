@@ -80,6 +80,10 @@
                       @endforeach
                   </select>
                 </div>
+                <div class="form-group">
+                  <label for="attachment">Attachment</label>
+                  <input type="file" class="form-control-file" id="attachment" name="attachment">
+              </div>
                 <button type="submit" class="btn btn-primary">Create</button>
               </form>
         </div>

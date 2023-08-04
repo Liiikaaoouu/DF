@@ -2,8 +2,17 @@
 @section('content')
         <div>
             <div>{{ $tickets->id }} - {{ $tickets->name_project }}, {{ $tickets->name_of_the_manager }}, {{ $tickets->email_of_the_manage }} {{ $tickets->start_date_of_execution }}, {{ $tickets->status }},  {{ $tickets->category ? $tickets->category->title : 'No category assigned' }}, {{ $tickets->user->isNotEmpty() ? $tickets->user->first()->name : 'Not assigned' }}</div>
+            @if ($tickets->attachment)
+                <div>
+                    Attachment: {{ $tickets->attachment }}
+                    <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Edt attachment</a>
+                </div>
+            @else
+                Attachment: null
+                <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Download attachment</a>
+            @endif
             @if($commits->isEmpty())
-                <p>Пока нет комментариев.</p>
+                <p>Commits: null</p>
             @else
                 @foreach($commits as $commit)
                     <div class="mb-4">
@@ -35,7 +44,7 @@
             @endif
         </div>
         <div>
-            <a href ="{{route('ticket.index')}}" class="btn btn-primary mt-4">Back</a>
+            <a href ="{{route('ticket.index')}}" class="btn btn-primary mt-2">Back</a>
         </div>
 @endsection
 

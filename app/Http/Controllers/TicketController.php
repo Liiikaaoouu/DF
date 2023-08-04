@@ -53,6 +53,7 @@ class TicketController extends Controller
             'status' => 'nullable|string',
             'user' => 'nullable|array', 
             'category_id' => '',
+            'attachment' => 'nullable|max:2048', 
         ]);
     
         // $user = User::findOrFail($request->user);
@@ -61,6 +62,12 @@ class TicketController extends Controller
         // $ticket = Ticket::create($data);
         // $ticket->user()->attach($user);
         // $ticket->category()->create($cat);
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment');
+            $attachmentName = time() . '_' . $attachment->getClientOriginalName();
+            $attachment->storeAs('attachments', $attachmentName, 'public');
+        }
+
         $user = $data['user'];
         unset($data['user']);
         $ticket = Ticket::create($data);
@@ -104,8 +111,16 @@ class TicketController extends Controller
             'status' => 'nullable|string',
             'user' => 'nullable|array',
             'category_id' => '',
+            'attachment' => 'nullable|max:2048',
         ]);
+        
         $ticket = Ticket::findOrFail($id);
+        if ($request->hasFile('attachment')) {
+            $attachment = $request->file('attachment');
+            $attachmentName = time() . '_' . $attachment->getClientOriginalName();
+            $attachment->storeAs('attachments', $attachmentName, 'public');
+            $ticket->attachment = $attachmentName;
+        }
         $user = $data['user'];
         $ticket->user()->sync($user);
         unset($data['user']);
