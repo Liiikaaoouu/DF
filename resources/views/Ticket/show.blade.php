@@ -5,11 +5,15 @@
             @if ($tickets->attachment)
                 <div>
                     Attachment: {{ $tickets->attachment }}
-                    <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Edt attachment</a>
+                    @if(auth()->user()->can('update ticket'))  
+                        <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Edt attachment</a>
+                    @endif    
                 </div>
             @else
                 Attachment: null
-                <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Download attachment</a>
+                @if(auth()->user()->can('update ticket'))  
+                    <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Download attachment</a>
+                @endif
             @endif
             @if($commits->isEmpty())
                 <p>Commits: null</p>
