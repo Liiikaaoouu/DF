@@ -5,6 +5,7 @@
         <p>Your Name: {{ auth()->user()->name }}</p>
         <form action="{{ route('commit.update', $commit->id) }}" method="post">
             @csrf
+            @method('PUT')
             <div class="form-group">
                 <label for="content">Comment</label>
                 <textarea class="form-control" id="content" name="content" rows="3" required>{{ $commit->content }}</textarea>

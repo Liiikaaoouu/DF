@@ -18,9 +18,6 @@ return new class extends Migration
             $table->char('email_of_the_manager',50)->nullable();
             $table->date('start_date_of_execution')->nullable();
             $table->enum('status',['unknow', 'active', 'inactive']);
-            $table->unsignedBigInteger('category_id')->nullable();
-            $table->index('category_id', 'ticket_category_idx');
-            $table->foreign('category_id', 'ticket_category_fk')->on('categories')->references('id');
             $table->string('attachment')->nullable();
             $table->timestamps();
         });

@@ -6,7 +6,7 @@
                 <div>
                     Attachment: {{ $tickets->attachment }}
                     @if(auth()->user()->can('update ticket'))  
-                        <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Edt attachment</a>
+                        <a href="{{route('ticket.edit', $tickets->id)}}" target="_blank">Edit attachment</a>
                     @endif    
                 </div>
             @else

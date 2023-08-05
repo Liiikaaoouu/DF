@@ -6,9 +6,8 @@
                 @method('put')
                 <div class="form-group">
                     <label for="title">Title category</label>
-                    <input type="text" name="title" class="form-control" id="title" placeholder="title" value="{{ $vategory->title }}">
+                    <input type="text" name="title" class="form-control" id="title" placeholder="title" value="{{ $category->title }}">
                 </div>
-                  @endforeach
                   <button type="submit" class="btn btn-primary">Update</button>
                 </div>
             </form>

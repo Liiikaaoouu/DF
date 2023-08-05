@@ -35,15 +35,16 @@ class RoleController extends Controller
     {
         $request->validate([
             'name' => 'required|string',
-            'permissions.*' => 'required|integer|exists:permissions,id',
+            'permissions' => 'required|array',
+            'permissions.*' => 'required|exists:permissions,id',
         ]);
 
-        $newRole = Role::create([
+        $role = Role::create([
             'name' => $request->name,
         ]);
 
         $permissions = Permission::whereIn('id', $request->permissions)->get();
-        $newRole->syncPermissions($permissions);
+        $role->syncPermissions($permissions);
 
         return redirect()->route('role.index');
     }
@@ -75,14 +76,16 @@ class RoleController extends Controller
     public function update(Request $request, Role $roles, $id)
     {
         $request->validate([
-            'permissions' => 'required',
-            'permissions.*' => 'required|integer|exists:permissions,id',
+            'permissions' => 'required|array',
+            'permissions.*' => 'required|exists:permissions,id',
         ]);
     
         $roles = Role::findOrFail($id);
+        $roles->permissions()->detach();
 
         $permissions = Permission::whereIn('id', $request->permissions)->get();
-        $roles->syncPermissions($permissions);
+        foreach($permissions as $permission)
+            $roles->givePermissionTo($permission);
         
         return redirect()->route('role.index');
     }

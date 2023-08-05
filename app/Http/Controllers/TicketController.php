@@ -9,6 +9,7 @@ use App\Models\Ticket;
 use App\Models\User;
 use Illuminate\Support\Facades\Auth;
 use Illuminate\Support\Facades\DB;
+use Illuminate\Support\Facades\Storage;
 use Spatie\Permission\Models\Role;
 use Spatie\Permission\Models\Permission;
 
@@ -62,12 +63,12 @@ class TicketController extends Controller
         // $ticket = Ticket::create($data);
         // $ticket->user()->attach($user);
         // $ticket->category()->create($cat);
-        if ($request->hasFile('attachment')) {
-            $attachment = $request->file('attachment');
-            $attachmentName = time() . '_' . $attachment->getClientOriginalName();
-            $attachment->storeAs('attachments', $attachmentName, 'public');
+        $ticket = new Ticket();
+        if ($request->hasFile('attacment')) {
+            $file = $request->file('attachment');
+            $path = Storage::putFile('ticket_attachment', $file); 
+            $ticket->attachment = $path;
         }
-
         $user = $data['user'];
         unset($data['user']);
         $ticket = Ticket::create($data);
@@ -110,20 +111,24 @@ class TicketController extends Controller
             'email_of_the_manager' => 'nullable|email',
             'status' => 'nullable|string',
             'user' => 'nullable|array',
-            'category_id' => '',
+            'category_id' => 'nullable|string',
             'attachment' => 'nullable|max:2048',
         ]);
         
         $ticket = Ticket::findOrFail($id);
         if ($request->hasFile('attachment')) {
-            $attachment = $request->file('attachment');
-            $attachmentName = time() . '_' . $attachment->getClientOriginalName();
-            $attachment->storeAs('attachments', $attachmentName, 'public');
-            $ticket->attachment = $attachmentName;
+            $file = $request->file('attachment');
+            $path = Storage::putFile('ticket_attachments', $file); 
+            $ticket->attachment = $path;
+        }else{
+            unset($data['attachment']);
         }
         $user = $data['user'];
         $ticket->user()->sync($user);
         unset($data['user']);
+
+        //dd($data);
+        
         $ticket->update($data);
 
         return redirect()->route('ticket.index');

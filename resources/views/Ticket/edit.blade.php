@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
     <div>
-        <form action="{{ route('ticket.update', $tickets->id) }}" method="post">
+        <form action="{{ route('ticket.update', $tickets->id) }}" method="post" enctype="multipart/form-data">
             @csrf
             @method('put')
             <div class="form-group">
@@ -33,7 +33,7 @@
                 </select>
             </div><div class="form-group">
                 <label for="cstegory">Category</label>
-                <select class="form-control" id="category" name="category">
+                <select class="form-control" id="category" name="category_id">
                     @foreach($category as $categories)
                         <option value = "{{$categories->id}}" {{ $categories->id == $tickets->category_id ? 'selected' : ''}}>{{ $categories->title }}</option>
                     @endforeach
@@ -44,7 +44,6 @@
                 <input type="file" class="form-control-file" id="attachment" name="attachment">
                 @if ($tickets->attachment)
                     <p>Current Attachment: {{ $tickets->attachment }}</p>
-                    <a href="{{ asset('storage/attachments/' . $tickets->attachment) }}" target="_blank">Download Attachment</a>
                 @endif
             </div>
 

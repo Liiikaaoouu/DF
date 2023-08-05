@@ -17,7 +17,7 @@
                   @enderror
                   @foreach($permissions as $permission)
                     <div class="form-group form-check">
-                        <input type="checkbox" value={{$permission->id}} name="permissions[S]" class="form-check-input" id='{{$permission->id}}'>
+                        <input type="checkbox" value={{$permission->id}} name="permissions[]" class="form-check-input" id='{{$permission->id}}'>
                         <label class="form-check-label" for="{{$permission->id}}">{{$permission->name}}</label>
                     </div>
                   @endforeach

@@ -1,7 +1,7 @@
 @extends('main')
 @section('content')
         <div>
-            <form action = "{{route('ticket.store')}}" method = "post">
+            <form action = "{{route('ticket.store')}}" method = "post" enctype="multipart/form-data">
                 @csrf
                 <div class="form-group">
                   <label for="name_project">Name project</label>
