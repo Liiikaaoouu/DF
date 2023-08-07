@@ -16,7 +16,7 @@
                                 <form action = "{{route('role.destroy', $role->id)}}" method = "post">
                                     @csrf
                                     @method('DELETE')
-                                    <input type="submit" value="Delet" class="btn btn-danger mt-2">
+                                    <input type="submit" value="Delete" class="btn btn-danger mt-2">
                                 </form>
                             </div>
                         </div>

@@ -36,7 +36,7 @@ class TicketController extends Controller
         $categories = Category::all();
         $tickets = Ticket::all();
         $users = User::all();
-        $status = DB::table('tickets')->distinct()->pluck('status');
+        $status = ['unknow' , 'active', 'inactive'];
         return view('ticket.create', compact('tickets', 'users', 'status', 'categories'));
         
     }
@@ -65,8 +65,9 @@ class TicketController extends Controller
         // $ticket->category()->create($cat);
         $ticket = new Ticket();
         if ($request->hasFile('attacment')) {
-            $file = $request->file('attachment');
-            $path = Storage::putFile('ticket_attachment', $file); 
+            //$file = $request->file('attachment');
+            $path = $request->file('attachment')->store('attachment');
+            //$path = Storage::path('attachment');
             $ticket->attachment = $path;
         }
         $user = $data['user'];
@@ -96,7 +97,7 @@ class TicketController extends Controller
         $users = User::all();
         $userTicket = $tickets->user->pluck('id')->toArray();
         $category = Category::all();
-        $status = DB::table('tickets')->distinct()->pluck('status');
+        $status = ['unknow' , 'active', 'inactive'];
         return view('ticket.edit', compact('tickets', 'users', 'status', 'userTicket', 'category'));
     }
 
@@ -117,8 +118,7 @@ class TicketController extends Controller
         
         $ticket = Ticket::findOrFail($id);
         if ($request->hasFile('attachment')) {
-            $file = $request->file('attachment');
-            $path = Storage::putFile('ticket_attachments', $file); 
+            $path = $request->file('attachment')->store('attachment'); 
             $ticket->attachment = $path;
         }else{
             unset($data['attachment']);
